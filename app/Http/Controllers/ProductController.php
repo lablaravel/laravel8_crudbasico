@@ -18,36 +18,54 @@ class ProductController extends Controller
     
     public function create()
     {
-        
+        return view ('products.create');
     }
 
    
     public function store(Request $request)
     {
-        
+        $request->validate([
+            'name' => 'required',
+            'detail' => 'required',
+        ]);
+
+        Product::create($request->all());
+
+        return redirect()->route('products.index')->with('sucess', 'Product created successfully.');
+
     }
 
    
     public function show(Product $product)
     {
-     
+        return view('products.show', compact('product'));
     }
 
     
     public function edit(Product $product)
     {
-        
+        return view('products.edit',compact('product'));
     }
 
    
     public function update(Request $request, Product $product)
     {
-      
+      $request->validate([
+          'name' => 'required',
+          'detail' => 'required',
+
+      ]);
+
+        $product->update($request->all());
+        
+        return redirect()->route('products.index')->with('success','Produto updated successfully');
     }
 
     
     public function destroy(Product $product)
     {
-       
+       $product->delete();
+
+       return redirect()->route('products.index')->with('success','Produto deleted successfully');
     }
 }
